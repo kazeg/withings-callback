@@ -1,0 +1,58 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Vérifier l'empreinte CSP du script
+        run: |
+          node -e '
+            const fs = require("fs"), c = require("crypto");
+            const h = fs.readFileSync("index.html", "utf8");
+            const s = h.match(/<script>([\s\S]*?)<\/script>/)[1];
+            const d = "sha256-" + c.createHash("sha256").update(s, "utf8").digest("base64");
+            if (!h.includes(d)) { console.error("Empreinte CSP attendue : " + d); process.exit(1); }
+          '
+
+      - name: Préparer le site (index.html seul)
+        run: mkdir _site && cp index.html _site/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Vérifier l'URL publiée (HEAD = 200)
+        env:
+          URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            status=$(curl -s -o /dev/null -I -w '%{http_code}' "$URL")
+            echo "HEAD $URL -> $status"
+            [ "$status" = "200" ] && exit 0
+            sleep 10
+          done
+          exit 1

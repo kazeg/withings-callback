@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'sha256-exnBMi9JK0cQovGnYZXXbPABOO03i2N4jH/WcM9utOQ='; base-uri 'none'; form-action 'none'">
+<title>Withings callback</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+  dt { font-weight: bold; margin-top: 1rem; }
+  dd { margin: 0.25rem 0 0; font-family: ui-monospace, monospace; word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>Retour d'autorisation Withings</h1>
+<p>Cette page affiche seulement ce que le navigateur a reçu dans l'adresse. Elle n'envoie rien et n'enregistre rien.</p>
+<dl>
+  <dt>code</dt>
+  <dd id="code">Aucun code reçu</dd>
+  <dt>state</dt>
+  <dd id="state">Aucun state reçu</dd>
+</dl>
+<script>
+  var p = new URLSearchParams(location.search);
+  if (p.get("code")) document.getElementById("code").textContent = p.get("code");
+  if (p.get("state")) document.getElementById("state").textContent = p.get("state");
+</script>
+</body>
+</html>
