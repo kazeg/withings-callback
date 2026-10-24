@@ -1,7 +1,7 @@
 # withings-callback
 
 Page statique servant de `redirect_uri` OAuth2 pour l'API Withings, publiée sur GitHub Pages.
-Elle affiche les paramètres `code` et `state` reçus dans l'adresse ; elle n'envoie rien, ne stocke rien et ne charge aucun script externe.
+Elle affiche les paramètres `code` et `state` reçus dans l'adresse et les renvoie aussitôt à l'application Morning Widget du téléphone (adresse `intent://withings?…#Intent;scheme=morning;package=fr.kazetech.morningwidget;end`, bouton de secours si le navigateur bloque l'ouverture automatique). Elle n'envoie rien à un serveur, ne stocke rien et ne charge aucun script externe. Le code seul ne sert à rien : son échange demande le secret client, gardé chiffré dans l'application, et l'application vérifie le `state`.
 
 ## URL à enregistrer sur developer.withings.com
 
