@@ -5,17 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'sha256-exnBMi9JK0cQovGnYZXXbPABOO03i2N4jH/WcM9utOQ='; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'sha256-C4fs3TpbF8wBMDQp0KH5E3qR3HY0mFsgUAw+JY5XH5o='; base-uri 'none'; form-action 'none'">
 <title>Withings callback</title>
 <style>
   body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
   dt { font-weight: bold; margin-top: 1rem; }
   dd { margin: 0.25rem 0 0; font-family: ui-monospace, monospace; word-break: break-all; }
+  a.button { display: inline-block; margin-top: 1.5rem; padding: 0.75rem 1.25rem; border-radius: 0.5rem; background: #1a73e8; color: #fff; text-decoration: none; font-weight: 600; }
 </style>
 </head>
 <body>
 <h1>Retour d'autorisation Withings</h1>
-<p>Cette page affiche seulement ce que le navigateur a reçu dans l'adresse. Elle n'envoie rien et n'enregistre rien.</p>
+<p>Cette page renvoie l'autorisation reçue vers l'application Morning Widget de ce téléphone. Elle n'envoie rien à un serveur et n'enregistre rien.</p>
+<p><a class="button" id="open" href="#" hidden>Revenir dans Morning Widget</a></p>
 <dl>
   <dt>code</dt>
   <dd id="code">Aucun code reçu</dd>
@@ -23,9 +25,17 @@
   <dd id="state">Aucun state reçu</dd>
 </dl>
 <script>
-  var p = new URLSearchParams(location.search);
+  var q = location.search;
+  var p = new URLSearchParams(q);
   if (p.get("code")) document.getElementById("code").textContent = p.get("code");
   if (p.get("state")) document.getElementById("state").textContent = p.get("state");
+  if (p.get("code") || p.get("error")) {
+    var target = "intent://withings" + q + "#Intent;scheme=morning;package=fr.kazetech.morningwidget;end";
+    var a = document.getElementById("open");
+    a.href = target;
+    a.hidden = false;
+    location.replace(target);
+  }
 </script>
 </body>
 </html>
