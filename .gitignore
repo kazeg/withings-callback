@@ -6,3 +6,5 @@ _site/
 Thumbs.db
 .vscode/
 .idea/
+.claude/settings.local.json
+CLAUDE.local.md

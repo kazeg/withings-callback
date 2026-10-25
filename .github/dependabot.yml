@@ -1,0 +1,8 @@
+version: 2
+updates:
+  # Les SHA épinglés du workflow sont relevés par PR : tu relis et tu fusionnes.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
